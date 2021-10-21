@@ -14,7 +14,7 @@
         </li>
         <li class="navigation-header"><a class="navigation-header-text">Master</a><i class="navigation-header-icon material-icons">more_horiz</i>
         </li>
-        <li class="bold"><a class="waves-effect waves-cyan {{ (Request::is('user')) ? 'active' : '' }}" href="{{ url('user') }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="File Manager">Users</span></a>
+        <li class="bold"><a class="waves-effect waves-cyan {{ (Request::is('user') || Request::is('user/create') || Request::is('user/edit/*')) ? 'active' : '' }}" href="{{ url('user') }}"><i class="material-icons">account_circle</i><span class="menu-title" data-i18n="File Manager">Users</span></a>
         </li>
     </ul>
     <div class="navigation-background"></div><a class="sidenav-trigger btn-sidenav-toggle btn-floating btn-medium waves-effect waves-light hide-on-large-only" href="#" data-target="slide-out"><i class="material-icons">menu</i></a>

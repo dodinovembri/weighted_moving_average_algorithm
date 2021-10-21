@@ -24,6 +24,12 @@ Route::post('/prediction/filter', [App\Http\Controllers\PredictionController::cl
 Route::get('/sales', [App\Http\Controllers\SalesController::class, 'index'])->name('index');
 
 Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('index');
+Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('create');
+Route::post('/user/store', [App\Http\Controllers\UserController::class, 'store'])->name('store');
+Route::get('/user/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('edit');
+Route::post('/user/update/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('update');
+Route::get('/user/destroy/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('destroy');
+
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('index');
 Route::post('/profile/update/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('update');

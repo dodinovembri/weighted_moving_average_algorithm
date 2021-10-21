@@ -29,6 +29,13 @@
         <div class="col s12">
             <div class="container">
                 <div class="section section-data-tables">
+                    <div class="card">
+                        <div class="card-content">
+                            <a href="{{ url('user/create') }}">
+                                <button class="waves-effect waves-light cyan btn modal-trigger">Add New</button>
+                            </a>
+                        </div>
+                    </div>
                     <!-- Page Length Options -->
                     <div class="row">
                         <div class="col s12">
@@ -47,17 +54,42 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
-                                                        $no = 0;
-                                                        foreach ($users as $key => $value) { 
+                                                    <?php
+                                                    $no = 0;
+                                                    foreach ($users as $key => $value) {
                                                         $no++
                                                     ?>
                                                         <tr>
                                                             <td>{{ $no }}</td>
                                                             <td>{{ $value->name }}</td>
                                                             <td>{{ $value->email }}</td>
-                                                            <td></td>
+                                                            <td>
+                                                                <a href="{{ url('user/edit', $value->id) }}">
+                                                                    <i class="material-icons delete-mails">mode_edit</i>
+                                                                </a>
+                                                                <a class="modal-trigger mb-2 mr-1" href="#modal1{{ $value->id }}">
+                                                                    <i class="material-icons delete-mails">delete</i>
+                                                                </a>
+                                                            </td>
                                                         </tr>
+
+                                                        <!-- Modal Trigger -->
+                                                        <!-- Modal Structure -->
+                                                        <div id="modal1{{ $value->id }}" class="modal">
+                                                            <div class="modal-content">
+                                                                <h6>Delete Confirm</h6>
+                                                                <p>Are you sure want to delete this data?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a href="void::" class="modal-action modal-close waves-effect waves-green">
+                                                                    <button class="waves-effect waves-light cyan btn modal-trigger">Cancel</button>
+                                                                </a>
+                                                                <a href="{{ url('user/destroy', $value->id) }}">
+                                                                    <button class="waves-effect waves-light red btn modal-trigger">Delete Data</button>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
                                                     <?php } ?>
 
                                                 </tbody>
