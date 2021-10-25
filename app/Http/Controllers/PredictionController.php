@@ -51,6 +51,9 @@ class PredictionController extends Controller
                 $i = 0;
                 $n = 6;
             }
+            if ($key == 6) {
+                break;
+            }
             $i++;
             $l++;
             $n--;

@@ -29,13 +29,13 @@
         <div class="col s12">
             <div class="container">
                 <div class="section section-data-tables">
-                    <div class="card">
+                   {{-- <div class="card">
                         <div class="card-content">
                             <a href="{{ url('user/create') }}">
                                 <button class="waves-effect waves-light cyan btn modal-trigger">Add New</button>
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- Page Length Options -->
                     <div class="row">
                         <div class="col s12">
@@ -50,7 +50,7 @@
                                                         <th>No</th>
                                                         <th>Name</th>
                                                         <th>Email</th>
-                                                        <th>Actions</th>
+                                                        {{-- <th>Actions</th> --}}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -63,14 +63,14 @@
                                                             <td>{{ $no }}</td>
                                                             <td>{{ $value->name }}</td>
                                                             <td>{{ $value->email }}</td>
-                                                            <td>
+                                                           {{-- <td>
                                                                 <a href="{{ url('user/edit', $value->id) }}">
                                                                     <i class="material-icons delete-mails">mode_edit</i>
                                                                 </a>
                                                                 <a class="modal-trigger mb-2 mr-1" href="#modal1{{ $value->id }}">
                                                                     <i class="material-icons delete-mails">delete</i>
                                                                 </a>
-                                                            </td>
+                                                            </td> --}}
                                                         </tr>
 
                                                         <!-- Modal Trigger -->
