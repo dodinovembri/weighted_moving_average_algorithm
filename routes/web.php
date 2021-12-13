@@ -22,6 +22,8 @@ Route::get('/prediction', [App\Http\Controllers\PredictionController::class, 'in
 Route::post('/prediction/filter', [App\Http\Controllers\PredictionController::class, 'filter'])->name('filter');
 
 Route::get('/sales', [App\Http\Controllers\SalesController::class, 'index'])->name('index');
+Route::post('/sales/import', [App\Http\Controllers\SalesController::class, 'import'])->name('import');
+Route::get('/sales/export', [App\Http\Controllers\SalesController::class, 'export'])->name('export');
 
 Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('index');
 Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('create');

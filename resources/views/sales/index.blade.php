@@ -34,10 +34,11 @@
                             <a class="waves-effect waves-light cyan btn modal-trigger" href="#modal1">Import</a>
                             <div id="modal1" class="modal">
                                 <form method="POST" action="{{ url('sales/import') }}" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="modal-content">
                                         <h6>Import Data</h6>
                                         <hr><br>
-                                        <input id="icon_prefix" type="file" class="validate">
+                                        <input id="icon_prefix" type="file" name="file" class="validate">
                                     </div>
                                     <div class="modal-footer" style="margin-top: -20px;">
                                         <div class="input-field col s3">
@@ -46,7 +47,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <a class="waves-effect waves-light  btn">Export</a>
+                            <a class="waves-effect waves-light btn" href="{{ url('sales/export') }}">Export</a>
                         </div>
                     </div>
 
