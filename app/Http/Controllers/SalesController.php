@@ -50,10 +50,19 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        $insert = new SalesModel();
-        $insert->date = $request->post('date');
-        $insert->total = $request->post('total');
-        $insert->save();
+        $date = $request->post('date');
+        $check_date = SalesModel::where('date', $date)->first();
+        if (empty($check_date)) {
+            $insert = new SalesModel();
+            $insert->date = $request->post('date');
+            $insert->total = $request->post('total');
+            $insert->save();
+        }else{
+            $check_date->date = $request->post('date');
+            $check_date->total = $request->post('total');
+            $check_date->update();
+        }
+
 
         return redirect()->back()->with('message', 'Success adding new sales !');
     }

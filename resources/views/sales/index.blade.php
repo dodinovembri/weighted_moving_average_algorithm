@@ -106,7 +106,7 @@
                                                                 <div class="modal-content">
                                                                     <h6>Update Data</h6>
                                                                     <hr><br>
-                                                                    <input id="icon_prefix" type="date" name="date" value="{{ $value->date }}" class="validate">
+                                                                    <input id="icon_prefix" type="date" name="date" value="{{ $value->date }}" class="validate" readonly>
                                                                     <input id="icon_prefix" type="number" min="0" name="total" value="{{ $value->total }}" class="validate" placeholder="Total sales">
                                                                 </div>
                                                                 <div class="modal-footer" style="margin-top: -20px;">
