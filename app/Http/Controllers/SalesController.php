@@ -50,7 +50,12 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $insert = new SalesModel();
+        $insert->date = $request->post('date');
+        $insert->total = $request->post('total');
+        $insert->save();
+
+        return redirect()->back()->with('message', 'Success adding new sales !');
     }
 
     /**
@@ -84,7 +89,12 @@ class SalesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $update = SalesModel::find($id);
+        $update->date = $request->post('date');
+        $update->total = $request->post('total');
+        $update->update();
+
+        return redirect()->back()->with('message', 'Success update sales !');
     }
 
     /**
@@ -95,7 +105,10 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $find_to_delete = SalesModel::find($id);
+        $find_to_delete->delete();
+
+        return redirect()->back()->with('message', 'Success delete sales !');
     }
 
     public function import(Request $request)

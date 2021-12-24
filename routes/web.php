@@ -24,6 +24,9 @@ Route::post('/prediction/filter', [App\Http\Controllers\PredictionController::cl
 Route::get('/sales', [App\Http\Controllers\SalesController::class, 'index'])->name('index');
 Route::post('/sales/import', [App\Http\Controllers\SalesController::class, 'import'])->name('import');
 Route::get('/sales/export', [App\Http\Controllers\SalesController::class, 'export'])->name('export');
+Route::post('/sales/store', [App\Http\Controllers\SalesController::class, 'store'])->name('store');
+Route::post('/sales/update/{id}', [App\Http\Controllers\SalesController::class, 'update'])->name('update');
+Route::get('/sales/destroy/{id}', [App\Http\Controllers\SalesController::class, 'destroy'])->name('destroy');
 
 Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('index');
 Route::get('/user/create', [App\Http\Controllers\UserController::class, 'create'])->name('create');
