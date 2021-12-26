@@ -136,11 +136,6 @@
                                                     $dates[] = $value['date'];
                                                     $wmass[] = $value['wmas_final'];
                                                 }
-                                                if (count($wmas_future) != 0){
-                                                    foreach ($wmas_future as $key => $value) {
-                                                        $dates_future[] = $value['date'];
-                                                        $wmass_future[] = $value['wmas_final'];
-                                                    }
                                                 ?>
                                                 <script>
                                                     Highcharts.chart('container', {
@@ -209,9 +204,13 @@
     
                                                     });
                                                 </script>
-                                                <?php } ?>
                                             </div>
-                                            <?php if (count($wmas_future) != 0){ ?>
+                                            <?php if (count($wmas_future) != 0){ 
+                                                foreach ($wmas_future as $key => $value) {
+                                                    $dates_future[] = $value['date'];
+                                                    $wmass_future[] = $value['wmas_final'];
+                                                }
+                                                ?>
                                             <div class="input-field col s6">
                                                 <style>
                                                     .highcharts-figures,
