@@ -19,7 +19,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/prediction', [App\Http\Controllers\PredictionController::class, 'index'])->name('index');
-Route::post('/prediction/filter', [App\Http\Controllers\PredictionController::class, 'filter'])->name('filter');
+Route::post('/prediction/filter', [App\Http\Controllers\PredictionController::class, 'filter_new'])->name('filter_new');
 
 Route::get('/sales', [App\Http\Controllers\SalesController::class, 'index'])->name('index');
 Route::post('/sales/import', [App\Http\Controllers\SalesController::class, 'import'])->name('import');

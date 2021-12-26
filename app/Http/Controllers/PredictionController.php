@@ -27,156 +27,77 @@ class PredictionController extends Controller
         return view('prediction.index');
     }
 
-    public function filter(Request $request)
+    public function filter_new(Request $request)
     {
-        $from_dates = $request->post('from_date');
-        $from_date = date('Y-m-d', strtotime("-7 day", strtotime($from_dates)));
+        // date from form
+        $from_date = $request->post('from_date');
         $to_date = $request->post('to_date');
 
+        // get data
         $sales = SalesModel::whereBetween('date', [$from_date, $to_date])->get();
-        $wmas = [];
-        $total_to_multiples = [0];
-        $i = 0;
-        $n = 6;
-        $l = 0;
 
+        // initial value        
+        $alpha = 0.5;
+        $ewmas = [];
+
+        // calculate
         foreach ($sales as $key => $value) {
-            $weighted = $this->calculate($from_date, $to_date, $value->id, $total_to_multiples, $n, $l);
-            array_push($wmas, $weighted);
-            
-            $total_to_multiple = $weighted['wmas_final'];
-            array_push($total_to_multiples, $total_to_multiple);
-            
-            if ($i == 6) {
-                $i = 0;
-                $n = 6;
-            }
-            if ($key == 6) {
-                break;
-            }
-            $i++;
-            $l++;
-            $n--;
+            if ($key == 0) {
+                $date = $value->date;
+                $ewma = $value->total;
 
-        } 
-        
-        $data['wmas'] = $wmas;
+                $total_row_now = $value->total;
+                $date_now = $value->date;
+
+                $date_row_prev = $date_now;
+            }else{
+                $date = $value->date;
+                $total_row_now = $value->total;
+                $date_row_now = $value->date;
+
+                $total_alpha = $this->alpha_factorial($alpha, $from_date, $date_row_prev);
+                $total_alpha_divider = $this->alpha_factorial_divider($alpha, $from_date, $date_row_prev);
+                $ewma = ($total_row_now + $total_alpha) / $total_alpha_divider;
+                            
+                $date_row_prev = $date_row_now;
+            }
+            
+            $ewma_final = array(
+                'date' => $date, 
+                'wmas_final' => $ewma
+            );
+            array_push($ewmas, $ewma_final);
+        }
+
+        $data['wmas'] = $ewmas;
         return view('prediction.filter', $data);
     }
 
-    public function calculate($from_date, $to_date, $id, $total_to_multiples, $n, $l)
+    public function alpha_factorial($alpha, $from_date, $date_row_prev)
     {
-        $multiplier = [1, 2, 3, 4, 5, 6, 7];
-        $sum_multiplier = array_sum($multiplier);
-        $sales = SalesModel::where('id', '>=', $id)->whereBetween('date', [$from_date, $to_date])->get();
-        $wmas = [];
+        // get data
+        $sales = SalesModel::whereBetween('date', [$from_date, $date_row_prev])->orderBy('date', 'DESC')->get();
+        $total_alpha_factorial = 0;
         
+        // calculate
+        $i = 1;
         foreach ($sales as $key => $value) {
-            $date = $value->date;
-
-            if ($l > 6) {
-                $keys = $l - $n - 1;
-                $total = $total_to_multiples[$keys];
-            }else{
-                if ($key <= $n) {
-                    $total = $value->total;
-                }else{
-                    $total = $total_to_multiples[$key - $n];
-                }
-            }
-
-            $wma = $multiplier[$key] * $total;
-
-            $wma_result = array(
-                'date' => $date, 
-                'wma' => $wma
-            );
-
-            array_push($wmas, $wma_result);
-            if ($key == 6) {
-                break;
-            }
-        }    
-        
-        $total = 0;
-        foreach ($wmas as $key => $value) {
-            $total = $total + $value['wma']; 
+            $alpha_used = pow($alpha, $i);
+            $total_alpha_factorial = $total_alpha_factorial + ($value->total * $alpha_used);
+            $i ++;
         }
-        
-        $total_date = $l;
-        $last_date = date('Y-m-d', strtotime("+$total_date day", strtotime($date)));
-        $wmas_final = $total/$sum_multiplier;
-        $wmas_final = array(
-            'date' => $last_date, 
-            'wmas_final' => $wmas_final
-        );
 
-        return $wmas_final;
+        return $total_alpha_factorial;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function alpha_factorial_divider($alpha, $from_date, $date_row_prev)
     {
-        //
-    }
+        $sales = SalesModel::whereBetween('date', [$from_date, $date_row_prev])->count();
+        $total = 0;
+        for ($i=1; $i <= $sales; $i++) { 
+            $total = $total + pow($alpha, $i);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return $total_alpha_factorial = 1 + $total;
     }
 }
