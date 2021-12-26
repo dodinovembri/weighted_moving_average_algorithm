@@ -136,6 +136,11 @@
                                                     $dates[] = $value['date'];
                                                     $wmass[] = $value['wmas_final'];
                                                 }
+                                                if (count($wmas_future) != 0){
+                                                    foreach ($wmas_future as $key => $value) {
+                                                        $dates_future[] = $value['date'];
+                                                        $wmass_future[] = $value['wmas_final'];
+                                                    }
                                                 ?>
                                                 <script>
                                                     Highcharts.chart('container', {
@@ -204,7 +209,9 @@
     
                                                     });
                                                 </script>
+                                                <?php } ?>
                                             </div>
+                                            <?php if (count($wmas_future) != 0){ ?>
                                             <div class="input-field col s6">
                                                 <style>
                                                     .highcharts-figures,
@@ -267,7 +274,7 @@
                                                             text: 'Peramalan Penjualan Dengan Metode Weighted Moving Average'
                                                         },
                                                         xAxis: {
-                                                            categories: <?php echo json_encode($dates) ?>,
+                                                            categories: <?php echo json_encode($dates_future) ?>,
                                                             title: {
                                                                 text: null
                                                             }
@@ -295,7 +302,7 @@
                                                         series: [{
                                                             name: 'Penjualan ',
                                                             data: [
-                                                                <?php foreach ($wmas as $key => $value) {
+                                                                <?php foreach ($wmas_future as $key => $value) {
                                                                     $date = $value['date'];
                                                                     $total = $value['wmas_final'];
     
@@ -310,6 +317,7 @@
                                                     });
                                                 </script>
                                             </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>

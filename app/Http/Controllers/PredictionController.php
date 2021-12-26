@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SalesModel;
+use DateTime;
 
 class PredictionController extends Controller
 {
@@ -32,7 +33,27 @@ class PredictionController extends Controller
         // date from form
         $from_date = $request->post('from_date');
         $to_date = $request->post('to_date');
+        $wmas = $this->filter($from_date, $to_date);
+        
+        $from_date2 = date_create($from_date);
+        $to_date2 = date_create($to_date);
+        $diff=date_diff($from_date2, $to_date2);
+        $diff_date = $diff->format("%R%a days");
 
+        $from_date3 = date('Y-m-d', strtotime($diff_date, strtotime($from_date)));
+        $from_date4 = date('Y-m-d', strtotime('+1 days', strtotime($from_date3)));
+        $to_date3 = date('Y-m-d', strtotime($diff_date, strtotime($to_date)));
+        $to_date4 = date('Y-m-d', strtotime('+1 days', strtotime($to_date3)));
+        $wmas_future = $this->filter($from_date4, $to_date4);
+
+        $data['wmas'] = $wmas;
+        $data['wmas_future'] = $wmas_future;
+
+        return view('prediction.filter', $data);
+    }
+
+    public function filter($from_date, $to_date)
+    {
         // get data
         $sales = SalesModel::whereBetween('date', [$from_date, $to_date])->get();
 
@@ -69,8 +90,7 @@ class PredictionController extends Controller
             array_push($ewmas, $ewma_final);
         }
 
-        $data['wmas'] = $ewmas;
-        return view('prediction.filter', $data);
+        return $ewmas;        
     }
 
     public function alpha_factorial($alpha, $from_date, $date_row_prev)
