@@ -37,7 +37,7 @@ class PredictionController extends Controller
         $sales = SalesModel::whereBetween('date', [$from_date, $to_date])->get();
 
         // initial value        
-        $alpha = 0.5;
+        $alpha = 0.9;
         $ewmas = [];
 
         // calculate
@@ -76,7 +76,7 @@ class PredictionController extends Controller
     public function alpha_factorial($alpha, $from_date, $date_row_prev)
     {
         // get data
-        $sales = SalesModel::whereBetween('date', [$from_date, $date_row_prev])->orderBy('date', 'DESC')->get();
+        $sales = SalesModel::whereBetween('date', [$from_date, $date_row_prev])->orderBy('date', 'DESC')->take(6)->get();
         $total_alpha_factorial = 0;
         
         // calculate
@@ -93,6 +93,7 @@ class PredictionController extends Controller
     public function alpha_factorial_divider($alpha, $from_date, $date_row_prev)
     {
         $sales = SalesModel::whereBetween('date', [$from_date, $date_row_prev])->count();
+        if ($sales > 6) $sales = 6;
         $total = 0;
         for ($i=1; $i <= $sales; $i++) { 
             $total = $total + pow($alpha, $i);
