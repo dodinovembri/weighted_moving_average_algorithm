@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SalesModel;
 use DateTime;
 
-class PredictionController extends Controller
+class EwmaController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -99,19 +99,10 @@ class PredictionController extends Controller
         $sales = SalesModel::whereBetween('date', [$from_date, $date_row_prev])->orderBy('date', 'DESC')->take(6)->get();
         $total_alpha_factorial = 0;
         
-        $timestamp = strtotime($from_date);
-        $day = date('D', $timestamp);
-        
         // calculate
-        $i = 2;
+        $i = 1;
         foreach ($sales as $key => $value) {
-            $date_db = strtotime($from_date);
-            $day_db = date('D', $date_db);
-            if ($day == $day_db) {
-                $alpha_used = $alpha;
-            }else{
-                $alpha_used = pow($alpha, $i);
-            }
+            $alpha_used = pow($alpha, $i);
             $total_alpha_factorial = $total_alpha_factorial + ($value->total * $alpha_used);
             $i ++;
         }
