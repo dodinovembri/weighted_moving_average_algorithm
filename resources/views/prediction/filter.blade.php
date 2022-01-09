@@ -266,9 +266,7 @@
     
                                                 <script>
                                                     Highcharts.chart('containers', {
-                                                        chart: {
-                                                            type: 'column'
-                                                        },
+                                                        
                                                         title: {
                                                             text: 'Peramalan Penjualan Dengan Metode Weighted Moving Average'
                                                         },
