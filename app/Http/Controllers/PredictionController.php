@@ -105,7 +105,7 @@ class PredictionController extends Controller
         // calculate
         $i = 2;
         foreach ($sales as $key => $value) {
-            $date_db = strtotime($from_date);
+            $date_db = strtotime($value->date);
             $day_db = date('D', $date_db);
             if ($day == $day_db) {
                 $alpha_used = $alpha;
