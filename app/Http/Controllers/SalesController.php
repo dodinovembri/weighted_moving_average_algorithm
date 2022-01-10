@@ -138,21 +138,23 @@ class SalesController extends Controller
                         if ($key2 == 0) {
                             continue;
                         }
-                        $excel_date = intval($value2[0]); //here is that value 41621 or 41631
-                        $unix_date = ($excel_date - 25569) * 86400;
-                        $excel_date = 25569 + ($unix_date / 86400);
-                        $unix_date = ($excel_date - 25569) * 86400;
-                        $orgDate = gmdate("d-m-Y", $unix_date); 
-                        $newDate = date("Y-m-d", strtotime($orgDate)); 
-
-                        $check = SalesModel::where('date', $newDate)->first();
-                        if (isset($check)) {
-                            continue;                       
+                        if ($value2[1] > 0) {
+                            $excel_date = intval($value2[0]); //here is that value 41621 or 41631
+                            $unix_date = ($excel_date - 25569) * 86400;
+                            $excel_date = 25569 + ($unix_date / 86400);
+                            $unix_date = ($excel_date - 25569) * 86400;
+                            $orgDate = gmdate("d-m-Y", $unix_date); 
+                            $newDate = date("Y-m-d", strtotime($orgDate)); 
+    
+                            $check = SalesModel::where('date', $newDate)->first();
+                            if (isset($check)) {
+                                continue;                       
+                            }
+                            $insert = new SalesModel();
+                            $insert->date = $newDate;
+                            $insert->total = $value2[1];
+                            $insert->save();
                         }
-                        $insert = new SalesModel();
-                        $insert->date = $newDate;
-                        $insert->total = $value2[1];
-                        $insert->save();
                      }         
         }
         Storage::delete($path);
